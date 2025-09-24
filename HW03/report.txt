@@ -1,0 +1,11 @@
+In this homework, I worked through a series of tasks that demonstrated how processes are created, synchronized, and managed in C using system calls like fork(), wait(), waitpid(), and the atexit() mechanism. I also explored how zombie processes are formed and how they can be prevented.
+
+The first assignment was a basic exercise in process creation. Using fork(), I created a child process that printed its own process ID (PID) and then exited. Meanwhile, the parent printed its own PID without waiting for the child. This simple task showed the nondeterministic nature of parent and child execution order and helped me confirm that both processes share the same code but run as independent execution flows.
+
+In the second assignment, I introduced synchronization by adding wait() and waitpid(). The parent process first used wait() to ensure one child had finished before continuing. I then created a second child and used waitpid() to specifically wait for that child first. Printing the exit codes of the child processes reinforced how the parent retrieves termination status and why selective waiting is sometimes necessary.
+
+The third assignment focused on the atexit() function. I registered two cleanup functions and observed that they were executed in last-in-first-out order whenever the program exited. By calling exit() at different points, I confirmed that these functions always run on normal termination. This mechanism is practical for cleaning up resources, such as closing files or deleting temporary data, and ensures consistency in program shutdown.
+
+In the fourth assignment, I worked with multiple child processes that returned different exit codes. Using waitpid(), the parent collected their exit statuses and printed whether each child exited normally or due to an error. This task reinforced how exit codes propagate from child to parent and how WIFEXITED and WEXITSTATUS macros are used to interpret them.
+
+The final assignment demonstrated zombie processes. By forking a child and not calling wait() in the parent, I could observe the child lingering as a zombie in process tables using ps or htop. After modifying the program to use wait(), the zombie disappeared, showing that reaping children is the parent’s responsibility. I also understood how wait() and waitpid() clear a child’s exit record from the kernel, preventing resource leaks.

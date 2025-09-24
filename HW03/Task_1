@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(void) {
+    pid_t pid = fork();
+    if (pid < 0) {
+        perror("fork");
+        return EXIT_FAILURE;
+    }
+
+    if (pid == 0) {
+        printf("[child]  PID=%d (parent PID=%d)\n", getpid(), getppid());
+        _exit(0);
+    } else {
+        printf("[parent] PID=%d (child PID=%d)\n", getpid(), pid);
+
+    }
+    return 0;
+}
+
